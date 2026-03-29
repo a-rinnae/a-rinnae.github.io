@@ -1,0 +1,354 @@
+{
+  "nested": {
+    "discord_protos": {
+      "nested": {
+        "discord_users": {
+          "nested": {
+            "v1": {
+              "nested": {
+                "FrecencyUserSettings": {
+                  "oneofs": {
+                    "_versions": {
+                      "oneof": [
+                        "versions"
+                      ]
+                    },
+                    "_favoriteGifs": {
+                      "oneof": [
+                        "favoriteGifs"
+                      ]
+                    },
+                    "_favoriteStickers": {
+                      "oneof": [
+                        "favoriteStickers"
+                      ]
+                    },
+                    "_stickerFrecency": {
+                      "oneof": [
+                        "stickerFrecency"
+                      ]
+                    },
+                    "_favoriteEmojis": {
+                      "oneof": [
+                        "favoriteEmojis"
+                      ]
+                    },
+                    "_emojiFrecency": {
+                      "oneof": [
+                        "emojiFrecency"
+                      ]
+                    },
+                    "_applicationCommandFrecency": {
+                      "oneof": [
+                        "applicationCommandFrecency"
+                      ]
+                    },
+                    "_favoriteSoundboardSounds": {
+                      "oneof": [
+                        "favoriteSoundboardSounds"
+                      ]
+                    },
+                    "_applicationFrecency": {
+                      "oneof": [
+                        "applicationFrecency"
+                      ]
+                    },
+                    "_heardSoundFrecency": {
+                      "oneof": [
+                        "heardSoundFrecency"
+                      ]
+                    },
+                    "_playedSoundFrecency": {
+                      "oneof": [
+                        "playedSoundFrecency"
+                      ]
+                    },
+                    "_guildAndChannelFrecency": {
+                      "oneof": [
+                        "guildAndChannelFrecency"
+                      ]
+                    },
+                    "_emojiReactionFrecency": {
+                      "oneof": [
+                        "emojiReactionFrecency"
+                      ]
+                    }
+                  },
+                  "fields": {
+                    "versions": {
+                      "type": "Versions",
+                      "id": 1,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "favoriteGifs": {
+                      "type": "FavoriteGIFs",
+                      "id": 2,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "favoriteStickers": {
+                      "type": "FavoriteStickers",
+                      "id": 3,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "stickerFrecency": {
+                      "type": "StickerFrecency",
+                      "id": 4,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "favoriteEmojis": {
+                      "type": "FavoriteEmojis",
+                      "id": 5,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "emojiFrecency": {
+                      "type": "EmojiFrecency",
+                      "id": 6,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "applicationCommandFrecency": {
+                      "type": "ApplicationCommandFrecency",
+                      "id": 7,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "favoriteSoundboardSounds": {
+                      "type": "FavoriteSoundboardSounds",
+                      "id": 8,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "applicationFrecency": {
+                      "type": "ApplicationFrecency",
+                      "id": 9,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "heardSoundFrecency": {
+                      "type": "HeardSoundFrecency",
+                      "id": 10,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "playedSoundFrecency": {
+                      "type": "PlayedSoundFrecency",
+                      "id": 11,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "guildAndChannelFrecency": {
+                      "type": "GuildAndChannelFrecency",
+                      "id": 12,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    },
+                    "emojiReactionFrecency": {
+                      "type": "EmojiFrecency",
+                      "id": 13,
+                      "options": {
+                        "proto3_optional": true
+                      }
+                    }
+                  },
+                  "nested": {
+                    "Versions": {
+                      "fields": {
+                        "clientVersion": {
+                          "type": "uint32",
+                          "id": 1
+                        },
+                        "serverVersion": {
+                          "type": "uint32",
+                          "id": 2
+                        },
+                        "dataVersion": {
+                          "type": "uint32",
+                          "id": 3
+                        }
+                      }
+                    },
+                    "GIFType": {
+                      "values": {
+                        "GIF_TYPE_NONE": 0,
+                        "GIF_TYPE_IMAGE": 1,
+                        "GIF_TYPE_VIDEO": 2
+                      }
+                    },
+                    "FavoriteGIF": {
+                      "fields": {
+                        "format": {
+                          "type": "GIFType",
+                          "id": 1
+                        },
+                        "src": {
+                          "type": "string",
+                          "id": 2
+                        },
+                        "width": {
+                          "type": "uint32",
+                          "id": 3
+                        },
+                        "height": {
+                          "type": "uint32",
+                          "id": 4
+                        },
+                        "order": {
+                          "type": "uint32",
+                          "id": 5
+                        }
+                      }
+                    },
+                    "FavoriteGIFs": {
+                      "fields": {
+                        "gifs": {
+                          "keyType": "string",
+                          "type": "FavoriteGIF",
+                          "id": 1
+                        },
+                        "hideTooltip": {
+                          "type": "bool",
+                          "id": 2
+                        }
+                      }
+                    },
+                    "FavoriteStickers": {
+                      "fields": {
+                        "stickerIds": {
+                          "rule": "repeated",
+                          "type": "fixed64",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "FrecencyItem": {
+                      "fields": {
+                        "totalUses": {
+                          "type": "uint32",
+                          "id": 1
+                        },
+                        "recentUses": {
+                          "rule": "repeated",
+                          "type": "uint64",
+                          "id": 2
+                        },
+                        "frecency": {
+                          "type": "int32",
+                          "id": 3
+                        },
+                        "score": {
+                          "type": "int32",
+                          "id": 4
+                        }
+                      }
+                    },
+                    "StickerFrecency": {
+                      "fields": {
+                        "stickers": {
+                          "keyType": "fixed64",
+                          "type": "FrecencyItem",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "FavoriteEmojis": {
+                      "fields": {
+                        "emojis": {
+                          "rule": "repeated",
+                          "type": "string",
+                          "id": 1,
+                          "options": {
+                            "packed": false
+                          }
+                        }
+                      }
+                    },
+                    "EmojiFrecency": {
+                      "fields": {
+                        "emojis": {
+                          "keyType": "string",
+                          "type": "FrecencyItem",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "ApplicationCommandFrecency": {
+                      "fields": {
+                        "applicationCommands": {
+                          "keyType": "string",
+                          "type": "FrecencyItem",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "FavoriteSoundboardSounds": {
+                      "fields": {
+                        "soundIds": {
+                          "rule": "repeated",
+                          "type": "fixed64",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "ApplicationFrecency": {
+                      "fields": {
+                        "applications": {
+                          "keyType": "string",
+                          "type": "FrecencyItem",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "HeardSoundFrecency": {
+                      "fields": {
+                        "heardSounds": {
+                          "keyType": "string",
+                          "type": "FrecencyItem",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "PlayedSoundFrecency": {
+                      "fields": {
+                        "playedSounds": {
+                          "keyType": "string",
+                          "type": "FrecencyItem",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "GuildAndChannelFrecency": {
+                      "fields": {
+                        "guildAndChannels": {
+                          "keyType": "fixed64",
+                          "type": "FrecencyItem",
+                          "id": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
