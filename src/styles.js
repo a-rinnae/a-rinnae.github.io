@@ -123,6 +123,7 @@ const styles = {
   },
   writingContent: {
     marginTop: 12,
+    overflowWrap: "anywhere",
   },
 };
 

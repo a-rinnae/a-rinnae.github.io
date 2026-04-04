@@ -145,33 +145,28 @@ export default function App() {
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>Discord Favorite GIFs Tool</h1>
-      <p>
-        <div>
-          <b>INSTRUCTIONS:</b>
-          <ol>
-            <li>
-              Go to the web version of Discord at discord.com and sign in.
-            </li>
-            <li>Open Developer Tools by pressing Ctrl+Shift+I or F12.</li>
-            <li>Select the Network tab.</li>
-            <li>Reload the page.</li>
-            <li>In Discord, click any server in the left sidebar.</li>
-            <li>
-              In the Network tab, look for a request named <b>2</b>. If you do
-              not see it, open the GIF picker in Discord and it should appear.
-            </li>
-            <li>
-              Click the request named <b>2</b>, then open the Response tab.
-            </li>
-            <li>
-              Right-click the long text string in the response and select Copy
-              value.
-            </li>
-            <li>Paste the copied value into the box below.</li>
-          </ol>
-        </div>
-      </p>
-
+      <div>
+        <b>INSTRUCTIONS:</b>
+        <ol>
+          <li>Go to the web version of Discord at discord.com and sign in.</li>
+          <li>Open Developer Tools by pressing Ctrl+Shift+I or F12.</li>
+          <li>Select the Network tab.</li>
+          <li>Reload the page.</li>
+          <li>In Discord, click any server in the left sidebar.</li>
+          <li>
+            In the Network tab, look for a request named <b>2</b>. If you do not
+            see it, open the GIF picker in Discord and it should appear.
+          </li>
+          <li>
+            Click the request named <b>2</b>, then open the Response tab.
+          </li>
+          <li>
+            Right-click the long text string in the response and select Copy
+            value.
+          </li>
+          <li>Paste the copied value into the box below.</li>
+        </ol>
+      </div>
       <textarea
         value={favoritesInput}
         onChange={(event) => setFavoritesInput(event.target.value)}
