@@ -257,6 +257,39 @@ export default function App() {
       </div>
 
       <WritingSection />
+
+      <footer
+        style={{
+          marginTop: 32,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <a
+          href="https://github.com/a-rinnae/a-rinnae.github.io"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
+          <img
+            src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg"
+            alt="GitHub"
+            width="20"
+            height="20"
+            style={{
+              display: "block",
+            }}
+          />
+          <span>Source</span>
+        </a>
+      </footer>
     </div>
   );
 }
