@@ -3,10 +3,10 @@ import {
   getFileExtension,
   getMediaDownloadUrl,
   convertToGIFLink,
-} from "./media";
+} from "./urlUtils";
 
 function formatFailure(item, code, url, message = "") {
-  return `#${item.number} ${code} ${url}${message ? ` ${message}` : ""}`;
+  return `#${item.displayNumber} ${code} ${url}${message ? ` ${message}` : ""}`;
 }
 
 function saveBlob(blob, fileName) {
@@ -44,7 +44,7 @@ async function fetchFavoriteFile(item, convertTenorMp4ToGif) {
     const blob = await response.blob();
     const extension = getFileExtension(blob.type);
 
-    const number = String(item.number).padStart(3, "0");
+    const number = String(item.displayNumber).padStart(3, "0");
     const fileName = `gif-${number}.${extension}`;
 
     return { fileName, blob };

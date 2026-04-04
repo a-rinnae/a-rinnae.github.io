@@ -1,6 +1,5 @@
-import React from "react";
 import styles from "../styles";
-import { isTypeVideo } from "../lib/media";
+import { isTypeVideo } from "../lib/urlUtils";
 
 export default function GifCard({ item }) {
   return (
@@ -19,7 +18,7 @@ export default function GifCard({ item }) {
         ) : (
           <img
             src={item.assetUrl}
-            alt={`GIF ${item.order}`}
+            alt={`GIF ${item.sourceOrder}`}
             loading="lazy"
             style={styles.media}
           />
@@ -27,7 +26,7 @@ export default function GifCard({ item }) {
       </div>
 
       <div style={styles.cardBody}>
-        <div style={styles.row}>{item.number}</div>
+        <div style={styles.row}>{item.displayNumber}</div>
         <div style={styles.row}>
           {item.width} × {item.height}
         </div>

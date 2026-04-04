@@ -1,6 +1,6 @@
 import protobuf from "protobufjs";
 import protoJson from "../frecency-proto.json";
-import { normalizeUrl } from "./media";
+import { normalizeUrl } from "./urlUtils";
 const FRECENCY_SETTINGS_TYPE =
   "discord_protos.discord_users.v1.FrecencyUserSettings";
 
@@ -25,14 +25,14 @@ function getFavoriteGifs(settings) {
   return settings.favoriteGifs?.gifs || {};
 }
 
-function normalizeGifEntry([sourcePageUrl, gif]) {
+function toFavoriteItem([sourcePageUrl, gif]) {
   return {
     sourcePageUrl,
     assetUrl: normalizeUrl(gif?.src || sourcePageUrl),
     format: gif?.format || "",
     width: gif?.width || 0,
     height: gif?.height || 0,
-    order: gif.order,
+    sourceOrder: gif?.order ?? 0,
   };
 }
 
@@ -44,12 +44,8 @@ export function decodeFavorites(rawInput) {
     const favoriteGifs = getFavoriteGifs(settings);
 
     return Object.entries(favoriteGifs)
-      .map(normalizeGifEntry)
-      .sort((a, b) => a.order - b.order)
-      .map((gif, index) => ({
-        ...gif,
-        number: index + 1,
-      }));
+      .map(toFavoriteItem)
+      .sort((left, right) => left.sourceOrder - right.sourceOrder);
   } catch {
     throw new Error(
       "Could not decode favorites. Make sure you pasted the correct base64 string.",

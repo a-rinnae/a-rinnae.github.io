@@ -1,97 +1,132 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import styles from "./styles";
 import GifCard from "./components/GifCard";
-import Controls from "./components/Controls";
-import DownloadErrors from "./components/DownloadErrors";
+import Toolbar from "./components/Toolbar";
+import DownloadFailures from "./components/DownloadFailures";
 import WritingSection from "./components/WritingSection";
 import { decodeFavorites } from "./lib/decodeFavorites";
-import { downloadFavoritesZip } from "./lib/downloadZip";
-
+import { downloadFavoritesZip } from "./lib/downloadFavoritesZip";
 export default function App() {
-  const [input, setInput] = useState("");
-  const [favorites, setFavorites] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [favoritesInput, setFavoritesInput] = useState("");
+  const [favoriteItems, setFavoriteItems] = useState([]);
   const [sortOrder, setSortOrder] = useState("oldest");
-  const [isDownloadingZip, setIsDownloadingZip] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [downloadErrors, setDownloadErrors] = useState([]);
-  const [zipProgress, setZipProgress] = useState(0);
-  const [zipProgressLabel, setZipProgressLabel] = useState("");
-  const [convertTenorMp4ToGif, setConvertTenorMp4ToGif] = useState(false);
 
-  const sortedFavorites = useMemo(() => {
-    const nextFavorites = [...favorites];
+  const [isDownloadingArchive, setIsDownloadingArchive] = useState(false);
+  const [downloadFailures, setDownloadFailures] = useState([]);
+  const [downloadProgressPercent, setDownloadProgressPercent] = useState(0);
+  const [downloadProgressLabel, setDownloadProgressLabel] = useState("");
+  const [preferTenorGif, setPreferTenorGif] = useState(false);
 
-    nextFavorites.sort((left, right) =>
+  const successMessageTimeoutRef = useRef(null);
+
+  const visibleFavorites = useMemo(() => {
+    const sortedItems = [...favoriteItems].sort((left, right) =>
       sortOrder === "oldest"
-        ? left.order - right.order
-        : right.order - left.order,
+        ? left.sourceOrder - right.sourceOrder
+        : right.sourceOrder - left.sourceOrder,
     );
 
-    return nextFavorites;
-  }, [favorites, sortOrder]);
+    return sortedItems.map((favoriteItem, index) => ({
+      ...favoriteItem,
+      displayNumber: index + 1,
+    }));
+  }, [favoriteItems, sortOrder]);
 
-  function handleDecode() {
+  function clearSuccessMessageTimer() {
+    if (successMessageTimeoutRef.current) {
+      clearTimeout(successMessageTimeoutRef.current);
+      successMessageTimeoutRef.current = null;
+    }
+  }
+
+  function showTemporarySuccessMessage(message) {
+    clearSuccessMessageTimer();
+    setSuccessMessage(message);
+    successMessageTimeoutRef.current = setTimeout(() => {
+      setSuccessMessage("");
+      successMessageTimeoutRef.current = null;
+    }, 2000);
+  }
+
+  function clearFeedbackMessages() {
+    clearSuccessMessageTimer();
     setErrorMessage("");
     setSuccessMessage("");
-    setDownloadErrors([]);
+  }
+
+  function resetDownloadFeedback() {
+    setDownloadFailures([]);
+    setDownloadProgressPercent(0);
+    setDownloadProgressLabel("");
+  }
+
+  function handleDecodeFavorites() {
+    clearFeedbackMessages();
+    resetDownloadFeedback();
 
     try {
-      const decodedFavorites = decodeFavorites(input);
-      setFavorites(decodedFavorites);
+      const decodedFavorites = decodeFavorites(favoritesInput);
+      setFavoriteItems(decodedFavorites);
     } catch (error) {
-      setFavorites([]);
+      setFavoriteItems([]);
       setErrorMessage(
         error instanceof Error ? error.message : "Could not decode favorites.",
       );
     }
   }
 
-  async function handleCopyAssetLinks() {
-    try {
-      await navigator.clipboard.writeText(
-        sortedFavorites.map((item) => item.assetUrl).join("\n"),
-      );
-      setSuccessMessage("Copied asset links.");
-    } catch {
-      setSuccessMessage("Could not copy asset links.");
-    }
+  function handleToggleSortOrder() {
+    setSortOrder((currentSortOrder) =>
+      currentSortOrder === "oldest" ? "newest" : "oldest",
+    );
+  }
 
-    setTimeout(() => setSuccessMessage(""), 2000);
+  async function copyFavoriteLinks(getUrl, successText, failureText) {
+    try {
+      const text = visibleFavorites.map(getUrl).join("\n");
+      await navigator.clipboard.writeText(text);
+      showTemporarySuccessMessage(successText);
+    } catch {
+      showTemporarySuccessMessage(failureText);
+    }
+  }
+
+  async function handleCopyAssetLinks() {
+    await copyFavoriteLinks(
+      (favoriteItem) => favoriteItem.assetUrl,
+      "Copied asset links.",
+      "Could not copy asset links.",
+    );
   }
 
   async function handleCopySourceLinks() {
-    try {
-      await navigator.clipboard.writeText(
-        sortedFavorites.map((item) => item.sourcePageUrl).join("\n"),
-      );
-      setSuccessMessage("Copied source links.");
-    } catch {
-      setSuccessMessage("Could not copy source links.");
-    }
-
-    setTimeout(() => setSuccessMessage(""), 2000);
+    await copyFavoriteLinks(
+      (favoriteItem) => favoriteItem.sourcePageUrl,
+      "Copied source links.",
+      "Could not copy source links.",
+    );
   }
 
-  async function handleDownloadZip() {
-    setZipProgress(0);
-    setZipProgressLabel("Starting download...");
-    setIsDownloadingZip(true);
-    setErrorMessage("");
-    setSuccessMessage("");
-    setDownloadErrors([]);
+  async function handleDownloadArchive() {
+    clearFeedbackMessages();
+    resetDownloadFeedback();
+    setDownloadProgressLabel("Starting download...");
+    setIsDownloadingArchive(true);
 
     try {
       const result = await downloadFavoritesZip(
-        sortedFavorites,
+        visibleFavorites,
         ({ percent, label }) => {
-          setZipProgress(percent);
-          setZipProgressLabel(label);
+          setDownloadProgressPercent(percent);
+          setDownloadProgressLabel(label);
         },
-        { convertTenorMp4ToGif },
+        { convertTenorMp4ToGif: preferTenorGif },
       );
 
-      setDownloadErrors(result.failedDownloads);
+      setDownloadFailures(result.failedDownloads);
 
       if (result.addedCount > 0) {
         setSuccessMessage("Downloaded ZIP.");
@@ -101,52 +136,68 @@ export default function App() {
     } catch {
       setErrorMessage("Could not download ZIP.");
     } finally {
-      setZipProgress(0);
-      setZipProgressLabel("");
-      setIsDownloadingZip(false);
+      setDownloadProgressPercent(0);
+      setDownloadProgressLabel("");
+      setIsDownloadingArchive(false);
     }
-  }
-
-  function handleToggleSort() {
-    setSortOrder((currentOrder) =>
-      currentOrder === "oldest" ? "newest" : "oldest",
-    );
   }
 
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>Discord Favorite GIFs Tool</h1>
       <p>
-        <b>INSTRUCTIONS:</b>
-        <br />
-        <br />
+        <div>
+          <b>INSTRUCTIONS:</b>
+          <ol>
+            <li>
+              Go to the web version of Discord at discord.com and sign in.
+            </li>
+            <li>Open Developer Tools by pressing Ctrl+Shift+I or F12.</li>
+            <li>Select the Network tab.</li>
+            <li>Reload the page.</li>
+            <li>In Discord, click any server in the left sidebar.</li>
+            <li>
+              In the Network tab, look for a request named <b>2</b>. If you do
+              not see it, open the GIF picker in Discord and it should appear.
+            </li>
+            <li>
+              Click the request named <b>2</b>, then open the Response tab.
+            </li>
+            <li>
+              Right-click the long text string in the response and select Copy
+              value.
+            </li>
+            <li>Paste the copied value into the box below.</li>
+          </ol>
+        </div>
       </p>
 
       <textarea
-        value={input}
-        onChange={(event) => setInput(event.target.value)}
+        value={favoritesInput}
+        onChange={(event) => setFavoritesInput(event.target.value)}
         placeholder="Follow the instructions and paste the base64"
         style={styles.textarea}
       />
 
-      <Controls
-        input={input}
-        favorites={favorites}
+      <Toolbar
+        favoritesInput={favoritesInput}
+        favoriteItems={favoriteItems}
         sortOrder={sortOrder}
-        isDownloadingZip={isDownloadingZip}
-        onDecode={handleDecode}
-        onToggleSort={handleToggleSort}
+        isDownloadingArchive={isDownloadingArchive}
+        preferTenorGif={preferTenorGif}
+        onDecodeFavorites={handleDecodeFavorites}
+        onToggleSortOrder={handleToggleSortOrder}
         onCopyAssetLinks={handleCopyAssetLinks}
         onCopySourceLinks={handleCopySourceLinks}
-        onDownloadZip={handleDownloadZip}
-        convertTenorMp4ToGif={convertTenorMp4ToGif}
-        onToggleConvertTenorMp4ToGif={() =>
-          setConvertTenorMp4ToGif((value) => !value)
+        onDownloadArchive={handleDownloadArchive}
+        onTogglePreferTenorGif={() =>
+          setPreferTenorGif((currentValue) => !currentValue)
         }
       />
-      {isDownloadingZip ? (
+
+      {isDownloadingArchive ? (
         <div style={styles.progressText}>
-          {zipProgressLabel} {Math.round(zipProgress)}%
+          {downloadProgressLabel} {Math.round(downloadProgressPercent)}%
         </div>
       ) : null}
 
@@ -155,7 +206,7 @@ export default function App() {
         <div style={styles.successText}>{successMessage}</div>
       ) : null}
 
-      <DownloadErrors errors={downloadErrors} />
+      <DownloadFailures failures={downloadFailures} />
 
       <div style={styles.countText}>
         <b>
@@ -170,22 +221,28 @@ export default function App() {
             <li>
               All GIFs sent through Tenor links on Discord are MP4s, not
               actually .gifs. Some of the reasons behind this is explained in
-              section "Will Tenor GIFs still work". You can download the true
-              GIFs, but the download time may increase by a lot. I assume
-              downloading the MP4 won't be much help for you, so you'll likely
-              want to check the option. Other GIFs will be left in whatever
-              format they're in, like .webp or .webm.
+              section "Will Tenor GIFs still work?" below. You can download the
+              true GIFs, but the download time does increase significantly. I
+              assume downloading the MP4 won't be much help for you, so you'll
+              likely want to check the option. Other GIFs outside Tenor will be
+              left in whatever format they're in, which is likely .gif, .webm,
+              or .webp.
             </li>
           </ul>
         </b>
         <br />
         <br />
-        {sortedFavorites.length} GIFs loaded.
+        {visibleFavorites.length > 0 && (
+          <>{visibleFavorites.length} GIFs loaded.</>
+        )}{" "}
       </div>
 
       <div style={styles.grid}>
-        {sortedFavorites.map((item) => (
-          <GifCard key={`${item.order}-${item.assetUrl}`} item={item} />
+        {visibleFavorites.map((favoriteItem) => (
+          <GifCard
+            key={`${favoriteItem.sourceOrder}-${favoriteItem.assetUrl}`}
+            item={favoriteItem}
+          />
         ))}
       </div>
 

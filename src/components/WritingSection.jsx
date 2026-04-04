@@ -332,11 +332,12 @@ export default function WritingSection() {
             method to begin with.
           </p>
           <p>
-            This tool actually just strips the 1 and /m to obtain the original
-            GIF: https://media.tenor.com/j2mInKWUP6sAAAAC/quagsire-pokemon. File
+            The true GIF variant is actually also quite easy to derive but never
+            part of any metadata. Removing the 1 and m/ also will also direct us
+            to the GIF without being wrapped in HTML, for example:
+            https://media.tenor.com/j2mInKWUP6sAAAAC/quagsire-pokemon. File
             extensions in URLs are mostly irrelevant. What matters is the
-            response of Content-Type header anyway. GIFs from this URL are not
-            wrapped in HTML, so sending this directly in Discord will work.
+            response of Content-Type header anyway.
           </p>
           <p>
             Discord proxies mostly everything. This becomes obvious if we think

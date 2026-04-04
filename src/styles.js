@@ -42,7 +42,7 @@ const styles = {
     color: "#b00020",
     margin: "0 0 12px",
   },
-  errorListText: {
+  failureListText: {
     margin: 0,
     fontFamily: "monospace",
     fontSize: 12,
@@ -82,14 +82,14 @@ const styles = {
     wordBreak: "break-all",
     fontSize: 12,
   },
-  errorList: {
+  failureList: {
     margin: "12px 0 16px",
     padding: 12,
     border: "1px solid #f0b3b3",
     borderRadius: 10,
     background: "#fff8f8",
   },
-  errorListTitle: {
+  failureListTitle: {
     margin: "0 0 8px",
     color: "#b00020",
     fontSize: 14,
