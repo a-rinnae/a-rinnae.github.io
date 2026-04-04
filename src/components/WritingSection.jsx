@@ -98,8 +98,14 @@ export default function WritingSection() {
               <p>
                 The WebM variant is also accessible in Tenor links, although
                 WebM only just recently became supported on Discord iOS devices
-                on November 4, 2025.
-                https://discord.com/blog/discord-patch-notes-november-4-2025.
+                on{" "}
+                <a
+                  href="https://discord.com/blog/discord-patch-notes-november-4-2025"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  November 4, 2025.
+                </a>
               </p>
               <p>
                 Basically, if Google decides to say bye-bye to the metadata that
@@ -219,9 +225,15 @@ export default function WritingSection() {
                 initial base64 decode. This predefined schema exists somewhere
                 in the Discord application, but it is not as a clean source file
                 .proto. Luckily, others have already reverse engineered the
-                protobuf schemas, which can be found at this link:
-                https://github.com/discord-userdoccers/discord-protos, and what
-                is used here.
+                protobuf schemas, which can be found at this{" "}
+                <a
+                  href="https://github.com/discord-userdoccers/discord-protos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  repo
+                </a>{" "}
+                and what is used here.
               </p>
               <p>
                 The specific proto necessary is FrecencyUserSettings.proto. We

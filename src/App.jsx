@@ -148,23 +148,38 @@ export default function App() {
       <div>
         <b>INSTRUCTIONS:</b>
         <ol>
-          <li>Go to the web version of Discord at discord.com and sign in.</li>
-          <li>Open Developer Tools by pressing Ctrl+Shift+I or F12.</li>
-          <li>Select the Network tab.</li>
-          <li>Reload the page.</li>
-          <li>In Discord, click any server in the left sidebar.</li>
+          <li>
+            Go to the web version of Discord at{" "}
+            <a
+              href="https://discord.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              discord.com
+            </a>{" "}
+            and sign in
+          </li>
+          <li>
+            Open Developer Tools by pressing <b>Ctrl+Shift+I</b> or <b>F12</b>
+          </li>
+          <li>
+            Select the <b>Network</b> tab
+          </li>
+          <li>Reload the page</li>
+          <li>In Discord, click any server in the left sidebar</li>
           <li>
             In the Network tab, look for a request named <b>2</b>. If you do not
-            see it, open the GIF picker in Discord and it should appear.
+            see it, open the GIF picker in Discord and it should appear
           </li>
           <li>
-            Click the request named <b>2</b>, then open the Response tab.
+            Click the request named <b>2</b>, then open the <b>Response</b> tab
           </li>
           <li>
-            Right-click the long text string in the response and select Copy
-            value.
+            Right-click the long text string in the response and select{" "}
+            <b>Copy Value</b>
           </li>
-          <li>Paste the copied value into the box below.</li>
+          <li>Paste the copied value into the box below</li>
+          <li>Press Decode and do whatever you want next</li>
         </ol>
       </div>
       <textarea
