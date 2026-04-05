@@ -2,7 +2,7 @@
 
 A browser-based tool for viewing and downloading favorited Discord GIFs (most of them), particularly targeting Tenor GIFs due to the API shutting down.
 
-Live site: https://a-rinnae.github.io/
+Live site: https://a-rinnae.github.io/discord-favorite-gif-tool/
 
 ## How It Works
 

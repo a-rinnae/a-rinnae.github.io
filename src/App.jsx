@@ -267,7 +267,7 @@ export default function App() {
         }}
       >
         <a
-          href="https://github.com/a-rinnae/a-rinnae.github.io"
+          href="https://github.com/a-rinnae/discord-favorite-gif-tool"
           target="_blank"
           rel="noopener noreferrer"
           style={{
